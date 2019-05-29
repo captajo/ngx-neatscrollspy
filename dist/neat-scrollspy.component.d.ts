@@ -14,6 +14,7 @@ export interface SelectionOrder {
 }
 export interface alignOptions {
     type: string;
+    topMargin: number;
 }
 export declare class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, OnDestroy {
     private ref;

@@ -29,6 +29,7 @@ export interface SelectionOrder {
 
 export interface alignOptions {
     type: string;
+    topMargin: number;
 }
 
 @Injectable()
@@ -56,7 +57,7 @@ export interface alignOptions {
         .nav78783838738 > li > a{
             position: relative;
             display: block;
-            padding: 10px 15px;
+            padding: 5px 10px;
             text-decoration: none;
             cursor: pointer;
         }
@@ -99,7 +100,8 @@ export class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, On
     }
 
     public defaultAlign: alignOptions = {
-        type: 'straight'
+        type: 'straight',
+        topMargin: 30
     };
 
     public changeStream$: any;
@@ -141,7 +143,8 @@ export class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, On
             }
         });
 
-        
+        this.ref.detach();
+        this.scrollStream$ = setInterval(() => { this.ref.detectChanges(); }, 1000);
     }
 
     addSpacing(position) {
@@ -184,7 +187,6 @@ export class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, On
         }
 
         setTimeout(() => {
-            this.ref.markForCheck();
             window.dispatchEvent(new Event('scroll'));
         }, 500);
 
@@ -307,6 +309,7 @@ export class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, On
 
     scrollTo(el) {
         el.scrollIntoView();
+        window.scrollBy(0, (this.alignOption.topMargin * -1));
         this.clearHighlightedField();
         this.highlightItemInView();
     }
@@ -331,6 +334,7 @@ export class NeatScrollspyTemplateComponent implements OnInit, AfterViewInit, On
     ngOnDestroy() {
         let scrollEventFunction = this.scrollEventFunction;
         this.changeStream$.unsubscribe();
+        clearInterval(this.scrollStream$);
         window.removeEventListener('scroll', scrollEventFunction);
     }
 }

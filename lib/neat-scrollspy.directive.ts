@@ -1,4 +1,4 @@
-import { Directive, ElementRef, AfterViewInit, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { NestScrollspyService } from './neat-scrollspy.service';
 
@@ -8,10 +8,12 @@ export interface NeatScrollSpyOptions {
 }
 
 @Directive({ selector: '[neatScrollSpy]' })
-export class NeatScrollspyDirective implements AfterViewInit, OnInit {
+export class NeatScrollspyDirective implements AfterViewInit, OnInit, OnDestroy {
     @Input('neatScrollSpy') public options: NeatScrollSpyOptions;
 
     public el: HTMLElement;
+    public previousEl: any;
+    public change$: any;
 
     public defaultOptions: NeatScrollSpyOptions = {
         id: 'neatSpyId',
@@ -35,11 +37,19 @@ export class NeatScrollspyDirective implements AfterViewInit, OnInit {
         }
 
         this.options = Object.assign(this.defaultOptions, this.options);
+        
     }
 
     ngAfterViewInit() {
-        this.nestscrollspyservice.setIndex(this.options.id, this.el.getElementsByClassName(this.options.selector));
+        this.change$ = setInterval(() => { 
+            if(this.previousEl != this.el.getElementsByClassName(this.options.selector)) {
+                this.nestscrollspyservice.setIndex(this.options.id, this.el.getElementsByClassName(this.options.selector));
+                this.previousEl = this.el.getElementsByClassName(this.options.selector);
+            }
+        }, 1000);
     }
 
-
+    ngOnDestroy() {
+        clearInterval(this.change$);
+    }
 }

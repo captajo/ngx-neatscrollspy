@@ -1,6 +1,6 @@
 {
-  "name": "ngx-neatscrollspy",
-  "version": "1.0.0",
+  "name": "ngx-scrollspys",
+  "version": "1.0.2",
   "description": "Plugin to create a smooth and custom scrollspy experience in your application",
   "main": "neat-scrollspy.umd.js",
   "jsnext:main": "neat-scrollspy.esm.js",
@@ -23,10 +23,14 @@
   },
   "keywords": [
     "Scrollspy",
-    "Angular"
+    "Angular2",
+    "TypeScript",
+    "Scroll",
+    "Spy",
+    "ng2"
   ],
   "author": "Jonathan Ijeh",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@angular/core": "^7.2.15",
     "rxjs": "^6.5.2"
